@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Iyek Retouch</string>
+    <string name="cutpastestring">Text will convert to Iyek if You cut or copy starting with "##"\n[Press to change]</string>
+    <string name="autocutpastestring">Enable auto_cut_Paste when shaking mobile\n[Press to change prefix]</string>
+    <string name="custwordstring">Custom words\n[Press to change]</string>
+    <string name="toaststring">Enable a toast to flash when doing iyek</string>
+    <string name="notificationstring">Enable persistent notification</string>
+    <string name="maxwordstring">Maximum word chartecters count limit\n[Press to change]</string>
+    <string name="iyektoengstring">Automatically flash an english transcripted toast when you cut or copy Iyek words \n[Click to change toast length]\n[alpha]</string>
+    <string name="iyekengpastestring">Enable Iyek and english both pasting\n[Press to change separator]</string>
+    <string name="phonictype">Enable Phonic typing for better accuracy\n[Click to change phoneme separator]</string>
+    <string name="sensibility">Sensitivity: %s G</string>
+    <string name="shake_number">Number of shakes : %s</string>
+    <string name="floating_widget">"Enable a floating widget when you are typing</string>
+    <string name="accessibility_service_description">Kanglei Iyek allows you to interact the auto cut and paste service with Android UI.This allows users with special accessibility needs to not perform that task manually.\n\nPermissions:\n-Observe your actions:Allows user to hide or show the pop up button to automatically when keyoard is hide or show. \n-Retrieve window content:Allows to cut and paste the words in the specific EditText box.</string>
+    <string name="about">ꯄ꯭ꯔꯣꯖꯦꯛ ꯀꯪꯂꯩ ꯏꯌꯦꯛ ꯀꯤ ꯃꯈꯗ ꯁꯖꯕ ꯑꯦꯞ ꯑꯃꯅꯤ꯫ ꯃꯁꯤ ꯁꯤꯖꯤꯟꯅꯗꯨꯅ ꯑꯩꯈꯣꯢꯒꯤ ꯏꯌꯦꯛ ꯑꯁꯤꯕꯨ ꯆꯥꯎꯈꯠꯅꯕ ꯍꯣꯠꯅꯃꯤꯅꯁꯤ꯫ ꯁꯣꯝꯁꯨ ꯀꯟꯇ꯭ꯔꯤꯕ꯭ꯋꯨꯠ ꯇꯧꯅꯤꯡꯂꯕꯗꯤ ꯍ꯭ꯋꯥꯠꯁꯑꯦꯄ ꯒ꯭ꯔꯧꯞ ꯑꯁꯤꯗ ꯆꯪꯕꯤꯔꯛꯎ꯫ ꯀꯝꯗꯧꯅ ꯃꯁꯤ ꯁꯤꯖꯤꯟꯅꯒꯗꯒꯦ ꯌꯦꯡꯅꯤꯡꯉꯒꯗꯤ ꯌꯨꯇ꯭ꯋꯨꯕ ꯕꯠꯇꯟ ꯑꯁꯤꯗ ꯅꯝꯕꯤꯌꯨ꯫\n\n*******************\n\nProject Kanglei Iyek ki makhada sajaba app amani.Masi sijinnaduna eikhoigi Iyek asibu chaokhatnaba hotnaminasi.Somsu contribute touninglabadi makhagi whatsapp asida changbiraku. Kamdouna masi sijinagadage yengningagadi youtube button asida nambiyu.</string>
+    <string name="aboutus">Project kanleilyek change the discription at string xml file name aboutus write here what you like write here</string>
 </resources>
