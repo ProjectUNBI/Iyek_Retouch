@@ -15,6 +15,8 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (null != intent && intent.getAction().equals("shake.detector")) {
+
+            //TODO IDONT KNOW WHAT IS IT
             customIntent mycustumobj=new customIntent(MYSHAKEFROMBROADCAST);
             Intent i = new Intent(context, myAccessibility.class);
             Bundle b = new Bundle();

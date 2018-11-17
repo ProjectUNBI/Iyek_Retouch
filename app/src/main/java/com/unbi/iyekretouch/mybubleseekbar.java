@@ -11,10 +11,12 @@ package com.unbi.iyekretouch;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.xw.repo.BubbleSeekBar;
 
 import java.io.Serializable;
@@ -22,6 +24,7 @@ import java.io.Serializable;
 import static com.unbi.iyekretouch.PublicStaticMethods.MYRESTARTSERVICE;
 import static com.unbi.iyekretouch.PublicStaticMethods.MYSTARTSERVICE;
 import static com.unbi.iyekretouch.PublicStaticMethods.ObjectToGsonString;
+import static com.unbi.iyekretouch.PublicStaticMethods.USERSAVEPREFERANCE;
 
 public class mybubleseekbar extends BubbleSeekBar.OnProgressChangedListenerAdapter {
 
@@ -53,11 +56,21 @@ public class mybubleseekbar extends BubbleSeekBar.OnProgressChangedListenerAdapt
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent i = new Intent(context, myAccessibility.class);
-                    Bundle b = new Bundle();
-                    b.putString("myObject", ObjectToGsonString(mycustumobj));
-                    i.putExtras(b);
-                    context.startService(i);
+//                    Intent i = new Intent(context, myAccessibility.class);
+//                    Bundle b = new Bundle();
+//                    b.putString("myObject", ObjectToGsonString(mycustumobj));
+//                    i.putExtras(b);
+//                    context.startService(i);
+                    userSavePreferance tempshare=new userSavePreferance();
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(USERSAVEPREFERANCE, Context.MODE_PRIVATE);
+                    if (sharedPreferences.contains("usersave")) {
+                        final Gson gson = new Gson();
+                        tempshare = gson.fromJson(sharedPreferences.getString("usersave", ""), userSavePreferance.class);
+                    } else {
+                        tempshare = new userSavePreferance();
+                    }
+                    tempshare.setUsershakelevel((float) myprogress,context);
+                    tempshare.saveMe(context);
 
                 }
             }, 1000);
@@ -77,6 +90,8 @@ public class mybubleseekbar extends BubbleSeekBar.OnProgressChangedListenerAdapt
 
 class customIntent implements Serializable{
     int myflag;
+    int shakevalue;
+    private String myString;
 
     public customIntent(int mystartservice, int progress) {
         setMyflag(mystartservice);
@@ -84,6 +99,10 @@ class customIntent implements Serializable{
     }
     public customIntent(int mystartservice) {
         setMyflag(mystartservice);
+    }
+    public customIntent(int mystartservice,String GSON) {
+        setMyflag(mystartservice);
+        setMyString(GSON);
     }
 
 
@@ -103,5 +122,11 @@ class customIntent implements Serializable{
         this.shakevalue = shakevalue;
     }
 
-    int shakevalue;
+    public String getMyString() {
+        return myString;
+    }
+
+    public void setMyString(String myString) {
+        this.myString = myString;
+    }
 }

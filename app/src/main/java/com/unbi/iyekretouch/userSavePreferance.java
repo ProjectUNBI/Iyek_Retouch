@@ -1,19 +1,23 @@
 package com.unbi.iyekretouch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 
+import static com.unbi.iyekretouch.PublicStaticMethods.USERPREFCHANGE;
+import static com.unbi.iyekretouch.PublicStaticMethods.ObjectToGsonString;
 import static com.unbi.iyekretouch.PublicStaticMethods.USERSAVEPREFERANCE;
 
 public class userSavePreferance implements Serializable {
 
     int multiplyer=16;
-    private float usershakelevel = (float) 4.8;//preset value p\of shake
+    private float usershakelevel = (float) 3.8;//preset value p\of shake
     private boolean is_iyekOn;
     private boolean is_customwordOn;
     private boolean is_IyekenglispaasteOn;
@@ -110,6 +114,14 @@ public class userSavePreferance implements Serializable {
         String serializedObject = gson.toJson(this);
         sharedPreferencesEditor.putString("usersave", serializedObject);
         sharedPreferencesEditor.apply();
+
+        //send to refreshObjectOd Assesibility service
+        customIntent mycustumobj=new customIntent(USERPREFCHANGE,serializedObject);
+        Intent i = new Intent(context, myAccessibility.class);
+        Bundle b = new Bundle();
+        b.putString("myObject", ObjectToGsonString(mycustumobj));
+        i.putExtras(b);
+        context.startService(i);
     }
 
 

@@ -1,7 +1,9 @@
 package com.unbi.iyekretouch;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -12,16 +14,22 @@ import android.view.Menu;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.xw.repo.BubbleSeekBar;
 
 import info.hoang8f.widget.FButton;
 
+import static com.unbi.iyekretouch.PublicStaticMethods.MYPACKAGE;
 import static com.unbi.iyekretouch.PublicStaticMethods.MYSTARTSERVICE;
 import static com.unbi.iyekretouch.PublicStaticMethods.USERSAVEPREFERANCE;
 
 public class MainActivity extends myExtraActivity {
+
+    private Intent myintent;
+    private BroadcastReceiver broadcastReceiver;
+    private boolean buttonIyekClick = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +38,12 @@ public class MainActivity extends myExtraActivity {
         /*
         TODO delet this code
          */
-
 //        Intent intent = new Intent(getApplicationContext(), myAccessibility.class);
 //        Bundle b = new Bundle();
 //        b.putInt("extra", MYSTARTSERVICE);//Flag ""
 //        intent.putExtras(b);
 //        getApplicationContext().startService(intent);
-
         ////////////////////
-
         //menu
         userSaved = new userSavePreferance();
         //Reading From Share Preference
@@ -94,7 +99,7 @@ public class MainActivity extends myExtraActivity {
         /*
          Set Seekba
          */
-        seekbar.setOnProgressChangedListener(new mybubleseekbar(getApplicationContext()) );
+        seekbar.setOnProgressChangedListener(new mybubleseekbar(getApplicationContext()));
         //We Set SEEKBAR
         /*
 
@@ -123,7 +128,47 @@ public class MainActivity extends myExtraActivity {
         /*
         Finished Keyboard checker
          */
+        myintent = new Intent(this, myAccessibility.class);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateUI(intent);
+            }
+        };
+        registerReceiver(broadcastReceiver, new IntentFilter(MYPACKAGE));
+    }
 
+    /*
+    Updtae You UI HERE
+     */
+    private void updateUI(Intent intent) {
+        userSaved.setIs_iyekOn(false, getApplicationContext());
+        IyekButton.setTextColor(getResources().getColor(R.color.fbutton_color_alizarinColour));
+        //This code is for the accessibility sewrvice not given
+        //So Open The Accessibility
+        if (buttonIyekClick) {
+            buttonIyekClick = false;
+            wenttoasscsibility=true;
+            Toast.makeText(this, "Ooops..Please give the Accesibility permission...", Toast.LENGTH_LONG).show();
+            OpenAccessibilityService();
+        }
+
+    }
+
+    ///////////////////////
+    @Override
+    public void onResume() {
+        super.onResume();
+        startService(myintent);
+        registerReceiver(broadcastReceiver, new IntentFilter(MYPACKAGE));
+        comeOutafterAccessibilitOpen();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+        stopService(myintent);
     }
 
     /*
@@ -236,6 +281,7 @@ public class MainActivity extends myExtraActivity {
     }
 
     public void ClickOnIyek(View view) {
+        buttonIyekClick = true;
         IyekbuttonClick();
     }
 }

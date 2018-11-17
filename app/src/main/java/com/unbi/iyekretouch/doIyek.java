@@ -1,6 +1,12 @@
 package com.unbi.iyekretouch;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
+
 public class doIyek {
+    private String prepreiyek;
     private String preIyek;
     private String Converted;
     private String EnglishIyek;
@@ -9,7 +15,7 @@ public class doIyek {
     private boolean IyekFirst;
     private String Seperator;
     private boolean isCustomword;
-
+    private int maximumcharacter;
 
     public doIyek(String preiyek, userSavePreferance userpreferance) {
         this.setPreIyek(preiyek);
@@ -17,30 +23,27 @@ public class doIyek {
         this.setIyekFirst(userpreferance.isIyek_first());
         this.setSeperator(userpreferance.getUserEngSeperator());
         this.setCustomword(userpreferance.isIs_customwordOn());
+        this.setMaximumcharacter(userpreferance.getMaxWord());
     }
 
-    public void convertnow(CustomWords costumword) {
+    public void convertnow(CustomWords costumword, final Context context) {
+
+
         String arg = getPreIyek();
+        if(arg.length()>0&&arg.length()<this.getMaximumcharacter()){
+        arg = arg.replaceAll("<", "︻");
+        arg = arg.replaceAll(">", "︼");
+        arg = arg.replaceAll("ã", "︶");
+        arg = arg.replaceAll(":", "﹅");
+        arg = arg.replaceAll("∆", "︴");
         if (isCustomword()) {
-
             //adding escape like
-            arg = arg.replaceAll("<", "︻");
-            arg = arg.replaceAll(">", "︼");
-            arg = arg.replaceAll("ã", "︶");
-            arg = arg.replaceAll(":", "﹅");
-            arg = arg.replaceAll("∆", "︴");
-
-
-
             arg = arg + "*####*:::::::" + costumword.getCustomword();
             arg = arg.replaceAll("(?s)\\b(\\w+)\\b(?=.*:\\1\\((\\w+)\\b)", "$2"); // :w+(w+:                                   //here we are doing this replacement of Custom Words......etc and all exept the following shown in next line comment
-
             String[] seperate0 = arg.split("\\*####\\*");                                                                         //here the *####*Dictio........... is remove
             arg = seperate0[0];
-
         }
         arg = arg + "*####*Dictionary:c=k:z=j:ch=ç:sh=s:oo=u:kh=õ:ng=ñ:th=θ:ph=f:jh=ɫ:gh=ö:bh=v:dh=ð:ee=i:aa=â:ei=ê:ou=ō:ae=e:ai=å:oi=ø:ui=û:ao=œ:L-꯭ꯂã:W-꯭ꯋã:R-꯭ꯔã:Y-꯭ꯌã:ar=ꯑ꯭ꯔ:er=ꯑꯦ꯭ꯔ:ir=ꯏ꯭ꯔ:or=ꯑꯣ꯭ꯔ:ur=ꯎ꯭ꯔ:aaa=ꯑꯥ:E-ꯑꯦ:I-ꯏ:O-ꯑꯣ:U-ꯎ:A-ꯑ:r-꯭ꯔã:";//here setting things for doing conditional search and replacement
-
         arg = arg.replaceAll("(?s)(\\w+)(?=.*:\\1=(.)\\b)", "$2");                                                 //here leter like "ch","dh","bh" are converted to single letter like ç,ð,v and so on
         arg = arg.replaceAll("(?s)([^aeiouAEIOU])\\B([WLRY])(?=.*:\\2\\-(\\w+)\\b:)", "ã$1$3");                    //here we converting word like "kWa" to "ãk-꯭ꯋã","kRa" to"ãk-꯭ꯔã" and so on["ã" is used to protect k from converting to kok lonsum and "l" to lai lonsum etc ...................
         arg = arg.replaceAll("([aeiouAEIOU])r", "$1ꯔ");                                                            //here we are converting word like "kar"to "kaꯔ","mer"to "meꯔ","lør"[previously it was loir before step2] to"løꯔ" and so on.......
@@ -64,7 +67,6 @@ public class doIyek {
         arg = arg.replaceAll("([꯰꯱꯲꯳꯴꯵꯶꯷꯸꯹])꯫([꯰꯱꯲꯳꯴꯵꯶꯷꯸꯹])", "$1.$2");                                         // here is number replacement
         arg = arg.replaceAll("([ꯣꯤꯥꯦꯧꯨꯩ])ꯪ", "$1ꯡ");                                                                     //here we are doing not to make nungtap and itap,ounap etc in same time and if happen so, we replace nungtap by ngou lonsum
         //arg=arg.replaceAll("꫰","");
-
         // the finaly word become "ꯀ-꯭ꯌꯥꯝꯒꯩ ꯍ=ꯥꯢꯔꯤꯕ ꯃꯐꯝꯁꯤ"
         //deescaping
         arg = arg.replaceAll("︻", "<");
@@ -78,12 +80,21 @@ public class doIyek {
             } else {
                 this.setConverted(getPreIyek() + getSeperator() + arg);
             }
-
-
         } else {
             this.setConverted(arg);
         }
+        }//end if of the word lengh checker
+        else{
+            this.setConverted(arg);
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
 
+                @Override
+                public void run() {
+                    Toast.makeText(context,"Please increase the charecter limit in Iyek app",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
 
@@ -128,7 +139,6 @@ public class doIyek {
         IyekFirst = iyekFirst;
     }
 
-
     public String getPreIyek() {
         return preIyek;
     }
@@ -161,5 +171,11 @@ public class doIyek {
         IyekEnglish = iyekEnglish;
     }
 
+    public int getMaximumcharacter() {
+        return maximumcharacter;
+    }
 
+    public void setMaximumcharacter(int maximumcharacter) {
+        this.maximumcharacter = maximumcharacter;
+    }
 }
