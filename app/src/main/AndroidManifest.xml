@@ -34,7 +34,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".about" />
-        <activity android:name=".customword_page" />
+        <activity android:name=".customword_page"
+            android:theme="@style/myNoactionBar"/>
 
         <receiver android:name=".MyBroadCastReceiver">
             <intent-filter>

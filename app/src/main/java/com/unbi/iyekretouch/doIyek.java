@@ -3,6 +3,7 @@ package com.unbi.iyekretouch;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 public class doIyek {
@@ -26,9 +27,9 @@ public class doIyek {
         this.setMaximumcharacter(userpreferance.getMaxWord());
     }
 
-    public void convertnow(CustomWords costumword, final Context context) {
+    public void convertnow(String costumwordo, final Context context) {
 
-
+        Log.d("THE CUSTUM W",costumwordo);
         String arg = getPreIyek();
         if(arg.length()>0&&arg.length()<this.getMaximumcharacter()){
         arg = arg.replaceAll("<", "︻");
@@ -38,7 +39,7 @@ public class doIyek {
         arg = arg.replaceAll("∆", "︴");
         if (isCustomword()) {
             //adding escape like
-            arg = arg + "*####*:::::::" + costumword.getCustomword();
+            arg = arg + "*####*:::::::" + costumwordo;
             arg = arg.replaceAll("(?s)\\b(\\w+)\\b(?=.*:\\1\\((\\w+)\\b)", "$2"); // :w+(w+:                                   //here we are doing this replacement of Custom Words......etc and all exept the following shown in next line comment
             String[] seperate0 = arg.split("\\*####\\*");                                                                         //here the *####*Dictio........... is remove
             arg = seperate0[0];

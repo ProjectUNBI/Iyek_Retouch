@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -19,10 +20,12 @@ import static com.unbi.iyekretouch.PublicStaticMethods.USERSAVEPREFERANCE;
 
 public class CustomWords implements Serializable {
     private String customword;
-    Map<String, String> CustomWordMap;
+
+    private Map<String, String> CustomWordMap;
 
     public CustomWords(){
         CustomWordMap = new TreeMap<>();
+
 
 
     }
@@ -52,14 +55,16 @@ we wan Custom words like ths ":word(wordtoreplace: "
         String string = ":";
         for (Map.Entry<String,String> entry : this.CustomWordMap.entrySet()){
 //            System.out.println("Key = " + entry.getKey() +
-//                    ", Value = " + entry.getValue());
-            string=string+entry.getKey()+entry.getValue();
+//                    ", Value = " + entry.getValue());//  :w+(w+:
+            string=string+entry.getKey()+"("+entry.getValue()+":";
         }
+        Log.d("THE CUSTUM W",string);
         this.setCustomword(string);
 
 
     }
     public  void saveMe(Context context) {
+        processCustomWord();
         SharedPreferences sharedPreferences = context.getSharedPreferences(USERSAVEPREFERANCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         final Gson gson = new Gson();
@@ -74,6 +79,13 @@ we wan Custom words like ths ":word(wordtoreplace: "
         b.putString("myObject", ObjectToGsonString(mycustumobj));
         i.putExtras(b);
         context.startService(i);
+    }
+    public Map<String, String> getCustomWordMap() {
+        return CustomWordMap;
+    }
+
+    public void setCustomWordMap(Map<String, String> customWordMap) {
+        CustomWordMap = customWordMap;
     }
 
 }

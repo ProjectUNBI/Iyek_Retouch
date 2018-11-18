@@ -17,7 +17,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.EditText;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayDeque;
@@ -37,6 +39,7 @@ public class myAccessibility extends AccessibilityService {
     private Intent intentToMainAct = new Intent(MYPACKAGE);
     private String userPreviousClippboard;
     private CustomWords thiscustuword;
+    private String custumstring;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -120,6 +123,7 @@ public class myAccessibility extends AccessibilityService {
                     if (cusTum != null) {
                         //TODO READCUSTOM WORD FROM AANY START from background i mean when the accesibility service is connected
                         thiscustuword = getGsonToObject(cusTum.getMyString(), CustomWords.class);
+                        custumstring=thiscustuword.getCustomword();
                     }
                     break;
             }
@@ -146,14 +150,15 @@ public class myAccessibility extends AccessibilityService {
         //stop the service
     }
 
-    private CustomWords readcustomword() {
+    private void readcustomword() {
         CustomWords custum = new CustomWords();
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(USERSAVEPREFERANCE, Context.MODE_PRIVATE);
         if (sharedPreferences.contains(CUSTOMWORDOBJ)) {
             final Gson gson = new Gson();
             custum = gson.fromJson(sharedPreferences.getString(CUSTOMWORDOBJ, ""), CustomWords.class);
         }
-        return custum;
+        thiscustuword=custum;
+        custumstring=thiscustuword.getCustomword();
     }
 
     private void startshakeservice() {
@@ -315,13 +320,19 @@ public class myAccessibility extends AccessibilityService {
             return;
         }
         //TODO read clipboard data
-        userPreviousClippboard = readclipboard();
+
+
         try {
+            userPreviousClippboard = readclipboard();
             curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CUT.getId(), arguments);
             String toconvert = readclipboard();
             doIyek doiyek = new doIyek(toconvert, userSaved);
-            doiyek.convertnow(thiscustuword, getApplicationContext());
+            doiyek.convertnow(custumstring, getApplicationContext());
             setprevclip(doiyek.getConverted());
+            if(toconvert.length()<1){
+                setprevclip(this.userPreviousClippboard);
+                return;
+            }
             curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_PASTE.getId(), arguments);
         } finally {
             setprevclip(this.userPreviousClippboard);
@@ -338,6 +349,9 @@ public class myAccessibility extends AccessibilityService {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         if ((clipboard.hasPrimaryClip()) && (clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
             ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+            if(item==null){
+                return "";
+            }
             return item.getText().toString();
         }
         return null;

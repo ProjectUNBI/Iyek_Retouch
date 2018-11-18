@@ -176,6 +176,7 @@ public class MainActivity extends myExtraActivity {
      */
     private void keyboardclose() {
         seperator.setCursorVisible(false);//set cuser invisible
+        getWindow().getDecorView().clearFocus();//clearing Focus
         String seper = seperator.getText().toString();
         //stor the text in sepertor
         userSaved.setUserEngSeperator(seper, getApplicationContext());//TODO you might get some Bug here

@@ -12,7 +12,6 @@ public class PublicStaticMethods {
     public static final int CUSTUMWORDCHANGE =6;
     public static final String CUSTOMWORDOBJ="customword";
     public static final String USERSAVEPREFERANCE="USERSAVEPREFERANCE";
-    public static final String CUSTOMWORD="CUSTOMWORD";
     public static final String MYPACKAGE="com.unbi.iyekretouch";
 
     public static <T> String ObjectToGsonString(T obj){
