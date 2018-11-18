@@ -54,8 +54,8 @@ public class CustumwodPageBase extends AppCompatActivity {
         //save to the sharepreferance
         //check if it is updat ein the assecibility service
         thiscustomword.getCustomWordMap().clear();//cleare the previous value
-        for (int i=0;i<customwordarray.size();i+=2){
-            thiscustomword.addCustomWorsd(customwordarray.get(i),customwordarray.get(i+1));
+        for (int i=customwordarray.size();i>0;i-=2){
+            thiscustomword.addCustomWorsd(customwordarray.get(i-2),customwordarray.get(i-1));
         }
         thiscustomword.saveMe(getApplicationContext());
     }

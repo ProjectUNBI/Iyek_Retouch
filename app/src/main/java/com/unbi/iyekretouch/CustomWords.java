@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -65,6 +66,11 @@ we wan Custom words like ths ":word(wordtoreplace: "
     }
     public  void saveMe(Context context) {
         processCustomWord();
+
+        Map<String,String>mymap=new TreeMap<>(new AlphaNumericStringComparator());
+        mymap.putAll(getCustomWordMap());
+        setCustomWordMap(mymap);
+
         SharedPreferences sharedPreferences = context.getSharedPreferences(USERSAVEPREFERANCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         final Gson gson = new Gson();
@@ -87,5 +93,6 @@ we wan Custom words like ths ":word(wordtoreplace: "
     public void setCustomWordMap(Map<String, String> customWordMap) {
         CustomWordMap = customWordMap;
     }
+
 
 }
