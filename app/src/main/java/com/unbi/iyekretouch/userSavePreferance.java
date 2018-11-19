@@ -23,7 +23,7 @@ public class userSavePreferance implements Serializable {
     private boolean is_IyekenglispaasteOn;
     private boolean iyek_first = true;
     private String userEngSeperator = "\n\n@@@@@@@@@@\n\n";
-    private int MaxWord = 250;
+    private int MaxWord = 300;
 
 
     /*

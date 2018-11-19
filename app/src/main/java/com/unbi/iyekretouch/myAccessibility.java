@@ -100,7 +100,10 @@ public class myAccessibility extends AccessibilityService {
                         }
                         if (userSaved.isIs_iyekOn()) {
                             Log.d("TAG", "MYSHAKEFROMBROADCAST");
-                            doIyekTransliteration();
+                            try {//TODO I dont want to loose the accessibility service
+                                doIyekTransliteration();
+                            } catch (Exception e) {
+                            }
                         }
                     }
                     currentmillis = System.currentTimeMillis();//assingning values to current milli
