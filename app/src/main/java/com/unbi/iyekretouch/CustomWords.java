@@ -49,6 +49,7 @@ public class CustomWords implements Serializable {
         this.customword = customword;
     }
 
+
     private void processCustomWord() {
 /*
 we wan Custom words like ths ":word(wordtoreplace: "
@@ -65,12 +66,12 @@ we wan Custom words like ths ":word(wordtoreplace: "
 
     }
     public  void saveMe(Context context) {
-        processCustomWord();
+
 
         Map<String,String>mymap=new TreeMap<>(new AlphaNumericStringComparator());
         mymap.putAll(getCustomWordMap());
         setCustomWordMap(mymap);
-
+        processCustomWord();
         SharedPreferences sharedPreferences = context.getSharedPreferences(USERSAVEPREFERANCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         final Gson gson = new Gson();
@@ -93,6 +94,9 @@ we wan Custom words like ths ":word(wordtoreplace: "
     public void setCustomWordMap(Map<String, String> customWordMap) {
         CustomWordMap = customWordMap;
     }
-
+    public void addCustomWordMap(Map<String, String> customWordMap,Context context) {
+        CustomWordMap.putAll(customWordMap);
+        this.saveMe(context);
+    }
 
 }

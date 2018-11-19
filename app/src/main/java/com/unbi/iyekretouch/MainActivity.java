@@ -1,12 +1,25 @@
 package com.unbi.iyekretouch;
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,17 +32,19 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.xw.repo.BubbleSeekBar;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
 import info.hoang8f.widget.FButton;
 
 import static com.unbi.iyekretouch.PublicStaticMethods.MYPACKAGE;
 import static com.unbi.iyekretouch.PublicStaticMethods.MYSTARTSERVICE;
 import static com.unbi.iyekretouch.PublicStaticMethods.USERSAVEPREFERANCE;
 
-public class MainActivity extends myExtraActivity {
-
-    private Intent myintent;
-    private BroadcastReceiver broadcastReceiver;
-    private boolean buttonIyekClick = false;
+public class MainActivity extends MainActivityBase {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +151,31 @@ public class MainActivity extends myExtraActivity {
             }
         };
         registerReceiver(broadcastReceiver, new IntentFilter(MYPACKAGE));
+
+         /*
+        INTENT RECEIVE MANAGEMENT
+         */
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        Log.d("hi", intent.toString());
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            handleSendText(intent); // Handle text being sent
+        }
+        if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+            handleSendTextMultipe(intent); // Handle text being sent
+        }
+        //VIEW"
+        if (Intent.ACTION_VIEW.equals(action) && type != null) {
+            viewhelper(intent); // Handle text being sent
+        }
+
+//        if(!batteryoptimize()){
+//            showoptimiseui();
+//        }
     }
+
+
 
     /*
     Updtae You UI HERE
@@ -148,11 +187,10 @@ public class MainActivity extends myExtraActivity {
         //So Open The Accessibility
         if (buttonIyekClick) {
             buttonIyekClick = false;
-            wenttoasscsibility=true;
+            wenttoasscsibility = true;
             Toast.makeText(this, "Ooops..Please give the Accesibility permission...", Toast.LENGTH_LONG).show();
             OpenAccessibilityService();
         }
-
     }
 
     ///////////////////////
@@ -284,5 +322,11 @@ public class MainActivity extends myExtraActivity {
     public void ClickOnIyek(View view) {
         buttonIyekClick = true;
         IyekbuttonClick();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

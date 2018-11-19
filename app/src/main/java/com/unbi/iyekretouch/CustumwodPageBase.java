@@ -1,7 +1,11 @@
 package com.unbi.iyekretouch;
 
+import android.animation.Animator;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -10,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.ksoichiro.android.observablescrollview.ObservableGridView;
 import com.google.gson.Gson;
@@ -25,14 +31,14 @@ public class CustumwodPageBase extends AppCompatActivity {
     protected CustomWords thiscustomword = new CustomWords();
     protected ArrayList<String> customwordarray;
     protected EditText Engadd, Iyekadd;
-    protected FloatingActionButton addbutton, sharebutton;
+    protected FloatingActionButton addbutton, sharebutton,whatsappshare;
     protected ObservableGridView gridView;
     protected ArrayAdapter adapter;
     protected boolean wasLongclick;
     protected Toolbar toobar;
     protected boolean keyboardwasshown;
     protected boolean comefromredit;
-    private int thiscosition;
+    protected int thiscosition;
 
     protected void doimportfromfile() {
         //TODO IMPORT FILE
@@ -41,13 +47,27 @@ public class CustumwodPageBase extends AppCompatActivity {
     protected void doaddwordactivity() {
         //show text view
         showvisible();
-        Engadd.setText("Your Iyek here...");
-        Iyekadd.setText("You word here....");
+        Iyekadd.setText("Your Iyek here...");
+        Engadd.setText("You word here....");
     }
 
+    protected void sharewhatsapp(){
+        ImportExport myexpoet=new ImportExport();
+        myexpoet.whatsappshare(this);
+    }
     protected void doshareactivity() {
         //TODO Share activity
+
+
+        //////////////////
+
+        ImportExport myexport=new ImportExport();
+        myexport.export(getApplicationContext());
+
+
     }
+
+
 
     protected void doupdatesavecustomword() {
         //convert arraylist to object arralyiost tomave
@@ -97,18 +117,47 @@ public class CustumwodPageBase extends AppCompatActivity {
             customwordarray.add(1, Iyekadd.getText().toString());
         }
         adapter.notifyDataSetChanged();
-        hidevisible();
+//        hidevisible();
         doupdatesavecustomword();
     }
 
     private void showvisible() {
+        YoYo.with(Techniques.BounceInDown)
+                .duration(700)
+                .repeat(0)
+                .playOn(toobar);
         toobar.setVisibility(View.VISIBLE);
     }
 
-    private void hidevisible() {
-        toobar.setVisibility(View.GONE);
-        Engadd.setText("Your Iyek here...");
-        Iyekadd.setText("You word here....");
+    protected void hidevisible() {
+        if(!(toobar.getVisibility()==View.VISIBLE)){
+            return;
+        }
+        YoYo.with(Techniques.FadeOutRight)
+                .duration(300)
+                .repeat(0)
+                .withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        toobar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+                    }
+                })
+                .playOn(toobar);
+//        toobar.setVisibility(View.GONE);
+        Engadd.setText("You word here....");
+        Iyekadd.setText("Your Iyek here...");
     }
 
     protected void getmycustumWord() {
@@ -127,5 +176,6 @@ public class CustumwodPageBase extends AppCompatActivity {
             customwordarray.add(entry.getValue());
         }
     }
+
 
 }

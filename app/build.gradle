@@ -43,6 +43,10 @@ dependencies {
     implementation 'com.github.safetysystemtechnology:android-shake-detector:v1.2'
     //floating Buttun
     implementation 'com.github.clans:fab:1.6.4'
-    //apache
+    //apache commons library for shorting things
     implementation 'org.apache.commons:commons-lang3:3.8.1'
+
+    implementation 'com.android.support:support-compat:28.0.0'
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
 }

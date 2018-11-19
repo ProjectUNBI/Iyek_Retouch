@@ -40,6 +40,7 @@ public class myAccessibility extends AccessibilityService {
     private String userPreviousClippboard;
     private CustomWords thiscustuword;
     private String custumstring;
+    doIyek doiyek = new doIyek();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -92,7 +93,7 @@ public class myAccessibility extends AccessibilityService {
                 case MYSHAKEFROMBROADCAST:
 //                    Log.d("TAG", "PreFiltre");
                     currentmillis = System.currentTimeMillis();
-                    if (currentmillis - previousmilli > 1000) {
+                    if (currentmillis - previousmilli > 500) {
                         previousmilli = currentmillis;//protecting this handeler method
                         if (userSaved == null) {
                             makeNonNullUsersave();
@@ -100,7 +101,6 @@ public class myAccessibility extends AccessibilityService {
                         if (userSaved.isIs_iyekOn()) {
                             Log.d("TAG", "MYSHAKEFROMBROADCAST");
                             doIyekTransliteration();
-
                         }
                     }
                     currentmillis = System.currentTimeMillis();//assingning values to current milli
@@ -115,7 +115,7 @@ public class myAccessibility extends AccessibilityService {
                     if (shakeOptionsObj != null && shakeOptionsObj.getShakeDetector() != null) {
                         shakeOptionsObj.getShakeDetector().stopShakeDetector(this);
                     }
-                    Log.d("FromAccessibilitye",String.valueOf(userSaved.getUsershakelevel()));
+                    Log.d("FromAccessibilitye", String.valueOf(userSaved.getUsershakelevel()));
                     shakeOptionsObj = new shakeOptionsObj(userSaved.getUsershakelevel());
                     shakeOptionsObj.getShakeDetector().start(this);
                     break;
@@ -123,7 +123,7 @@ public class myAccessibility extends AccessibilityService {
                     if (cusTum != null) {
                         //TODO READCUSTOM WORD FROM AANY START from background i mean when the accesibility service is connected
                         thiscustuword = getGsonToObject(cusTum.getMyString(), CustomWords.class);
-                        custumstring=thiscustuword.getCustomword();
+                        custumstring = thiscustuword.getCustomword();
                     }
                     break;
             }
@@ -157,8 +157,8 @@ public class myAccessibility extends AccessibilityService {
             final Gson gson = new Gson();
             custum = gson.fromJson(sharedPreferences.getString(CUSTOMWORDOBJ, ""), CustomWords.class);
         }
-        thiscustuword=custum;
-        custumstring=thiscustuword.getCustomword();
+        thiscustuword = custum;
+        custumstring = thiscustuword.getCustomword();
     }
 
     private void startshakeservice() {
@@ -304,7 +304,7 @@ public class myAccessibility extends AccessibilityService {
         //paste the Word
         //Store tothe previous Word
         AccessibilityNodeInfo curActivity = findScrollableNode(getRootInActiveWindow());
-        if (curActivity==null){
+        if (curActivity == null) {
             return;
         }
         Bundle arguments = new Bundle();
@@ -315,25 +315,28 @@ public class myAccessibility extends AccessibilityService {
         try {
             arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_START_INT, 0);
             arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_END_INT, curActivity.getText().length());
+            Log.d("THE LENTH VALUE", String.valueOf(curActivity.getTextSelectionEnd()) + "   " + curActivity.getText());
+            if (curActivity.getTextSelectionEnd() < 0) {
+                return;
+            }
             curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_SELECTION.getId(), arguments);
         } catch (Exception e) {
             return;
         }
         //TODO read clipboard data
-
-
         try {
             userPreviousClippboard = readclipboard();
             curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CUT.getId(), arguments);
             String toconvert = readclipboard();
-            doIyek doiyek = new doIyek(toconvert, userSaved);
-            doiyek.convertnow(custumstring, getApplicationContext());
+//       //            (toconvert, userSaved);
+            doiyek.convertnow(custumstring, getApplicationContext(), toconvert, userSaved);
             setprevclip(doiyek.getConverted());
-            if(toconvert.length()<1){
+            if (toconvert.length() < 1) {
                 setprevclip(this.userPreviousClippboard);
                 return;
             }
             curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_PASTE.getId(), arguments);
+        } catch (Exception e) {
         } finally {
             setprevclip(this.userPreviousClippboard);
         }
@@ -346,19 +349,25 @@ public class myAccessibility extends AccessibilityService {
     }
 
     private String readclipboard() {
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        if ((clipboard.hasPrimaryClip()) && (clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
-            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-            if(item==null){
-                return "";
+        try {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            if ((clipboard.hasPrimaryClip()) && (clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
+                ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+                if (item == null || item.getText() == null) {
+                    return "";
+                }
+                return item.getText().toString();
             }
-            return item.getText().toString();
+            return null;
+        } catch (Exception e) {
         }
-        return null;
+        return "";
     }
 
     private AccessibilityNodeInfo findScrollableNode(AccessibilityNodeInfo root) {
-        if(root==null){return null ;}
+        if (root == null) {
+            return null;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Deque<AccessibilityNodeInfo> deque = new ArrayDeque<>();
             deque.add(root);

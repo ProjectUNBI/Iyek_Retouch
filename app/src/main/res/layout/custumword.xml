@@ -78,6 +78,27 @@
         android:orientation="vertical">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/whatsappshare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_whatsapp"
+            app:fab_colorNormal="#00000000"
+            app:fab_colorPressed=" #00000000"
+            app:fab_colorRipple="#99FFFFFF"
+            app:fab_hideAnimation="@anim/fab_scale_down"
+            app:fab_label=""
+            app:fab_shadowColor="#66000000"
+            app:fab_shadowRadius="4dp"
+            app:fab_shadowXOffset="1dp"
+            app:fab_shadowYOffset="3dp"
+            app:fab_showAnimation="@anim/fab_scale_up"
+            app:fab_showShadow="true"
+            app:fab_size="normal" />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

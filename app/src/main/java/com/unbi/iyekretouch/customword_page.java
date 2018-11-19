@@ -1,17 +1,23 @@
 package com.unbi.iyekretouch;
 
+import android.animation.Animator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +27,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.ksoichiro.android.observablescrollview.ObservableGridView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -35,6 +43,19 @@ import static com.unbi.iyekretouch.PublicStaticMethods.USERSAVEPREFERANCE;
 
 public class customword_page extends CustumwodPageBase implements ObservableScrollViewCallbacks {
 
+    public static enum Action {
+        LR, // Left to Right
+        RL, // Right to Left
+        TB, // Top to bottom
+        BT, // Bottom to Top
+        None // when no action was detected
+    }
+
+
+    private static final String logTag = "SwipeDetector";
+    private static final int MIN_DISTANCE = 100;
+    private float downX, downY, upX, upY;
+    private Swipedetector.Action mSwipeDetected = Swipedetector.Action.None;
     private boolean conefromedittext;
 
     @Override
@@ -48,10 +69,18 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
 //        Iyekadd.setVisibility(View.GONE);
         addbutton = (FloatingActionButton) findViewById(R.id.addWord);
         sharebutton = (FloatingActionButton) findViewById(R.id.share);
+        whatsappshare = (FloatingActionButton) findViewById(R.id.whatsappshare);
+        whatsappshare.hide(false);
         toobar = (Toolbar) findViewById(R.id.toolbar);
         toobar.setVisibility(View.GONE);
         gridView = (ObservableGridView) findViewById(R.id.grid);
         gridView.setScrollViewCallbacks(this);
+        whatsappshare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharewhatsapp();
+            }
+        });
         Iyekadd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -79,12 +108,54 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
         sharebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//TODO SHARE
+                if (whatsappshare.isHidden()) {
+                    sharebutton.hide(true);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            whatsappshare.show(true);
+                            sharebutton.setImageResource(R.drawable.save);
+                            sharebutton.show(true);
+                        }
+                    }, 500);
+                    return;
+                }
                 doshareactivity();
             }
         });
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (toobar.getVisibility() == View.VISIBLE) {
+                    if (Engadd.getText().toString().equals("You word here....") || Engadd.getText().toString().equals("") || Engadd == null) {
+                        return;
+                    }
+                    if (Iyekadd.getText().toString().equals("Your Iyek here...") || Iyekadd.getText().toString().equals("") || Engadd == null) {
+                        return;
+                    }
+                    Log.d("BUGGGY BUG", Engadd.getText().toString());
+                    Log.d("BUGGY BYG", Iyekadd.getText().toString());
+                    if (comefromredit) {
+                        comefromredit = false;
+                        if (thiscosition % 2 != 0) {
+                            thiscosition--;
+                        }
+                        ArrayList<String> array = new ArrayList<>();
+                        array.add(Engadd.getText().toString());
+                        array.add(Iyekadd.getText().toString());
+                        customwordarray.addAll(thiscosition, array);
+                    } else {
+                        customwordarray.add(0, Engadd.getText().toString());
+                        customwordarray.add(1, Iyekadd.getText().toString());
+                    }
+                    adapter.notifyDataSetChanged();
+                    doupdatesavecustomword();
+                    Engadd.setText("");
+                    Iyekadd.setText("");
+                    return;
+                }
                 doaddwordactivity();
             }
         });
@@ -104,11 +175,10 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
 //            customwordarray.add("key" + i);
 //            customwordarray.add("value" + i);
 //        }
-        customwordarray=new ArrayList<>();
+        customwordarray = new ArrayList<>();
         getmycustumWord();
         thiscustomword = readcustomword();
         int counter = 1;
-
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, customwordarray);
         gridView.setAdapter(adapter);
         final Swipedetector swipeDetector = new Swipedetector();
@@ -128,20 +198,15 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("GRIDVIEW", String.valueOf(position) + "   " + String.valueOf(id) + "  " + String.valueOf(view) + "     " + String.valueOf(parent));
+                Log.d("ADAPTER VIEW", parent.toString());
                 if (swipeDetector.swipeDetected()) {
                     if (swipeDetector.getAction() == Swipedetector.Action.RL) {
-                        dodelete(position);
+                        dobviewdeletwithanim(parent,view,position);
                     } else if (swipeDetector.getAction() == Swipedetector.Action.LR) {
-                        dodelete(position);
+                        dobviewdeletwithanim(parent,view,position);
                     } else if (swipeDetector.getAction() == Swipedetector.Action.BT) {
                     } else if (swipeDetector.getAction() == Swipedetector.Action.TB) {
                     }
-                }
-                switch (position) {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
                 }
             }
         });
@@ -171,6 +236,60 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
         });
     }
 
+    private void dobviewdeletwithanim(AdapterView<?> parent, final View view, final int position) {
+
+
+
+        YoYo.with(Techniques.FadeOutDown)
+                .duration(200)
+                .repeat(0)
+                .playOn(view);
+        final View v = getPartnerview(parent, position);
+        YoYo.with(Techniques.FadeOutDown)
+                .duration(200)
+                .repeat(0)
+                .withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        dodelete(position);
+                        YoYo.with(Techniques.FadeInUp)
+                                .duration(200)
+                                .repeat(0)
+                                .playOn(view);
+                        YoYo.with(Techniques.FadeInUp)
+                                .duration(200)
+                                .repeat(0)
+                                .playOn(v);
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+                    }
+                })
+                .playOn(v);
+//                        .playOn(gridView.findViewById(position));
+
+
+
+    }
+
+    private View getPartnerview(AdapterView<?> parent, int id) {
+        if (!(id % 2 == 0)) {
+            id--;
+        } else {
+            id++;
+        }
+        return parent.getChildAt(id);
+    }
 
     private void keyboardclose() {//TODO HERE
 //        getWindow().getDecorView().clearFocus();//clearing Focus
@@ -231,11 +350,60 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
         return custum;
     }
 
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int X = (int) event.getX();
+        int Y = (int) event.getY();
+        int eventaction = event.getAction();
+        Log.d("ACTION", String.valueOf(eventaction));
+        switch (eventaction) {
+            case MotionEvent.ACTION_DOWN:
+//                Toast.makeText(this, "ACTION_DOWN AT COORDS "+"X: "+X+" Y: "+Y, Toast.LENGTH_SHORT).show();
+                hidevisible();
+                userinterected();
+                Log.d("MOVE", "Down");
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+//                Toast.makeText(this, "MOVE "+"X: "+X+" Y: "+Y, Toast.LENGTH_SHORT).show();
+                userinterected();
+                break;
+            case MotionEvent.ACTION_UP:
+                userinterected();
+//                Toast.makeText(this, "ACTION_UP "+"X: "+X+" Y: "+Y, Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
+    }
+
+    private void userinterected() {
+        //TODO USER INTERACT
+
+        if (!whatsappshare.isHidden()) {
+            whatsappshare.hide(true);
+            sharebutton.hide(true);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    sharebutton.setImageResource(R.drawable.share2);
+                    sharebutton.show(true);
+                }
+            }, 500);
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        // code here to show dialog
-        super.onBackPressed();  // optional depending on your needs
-        toobar.setVisibility(View.GONE);
+//        super.onBackPressed();
+        if(toobar.getVisibility()==View.VISIBLE){
+            hidevisible();
+        }else {
+            finish();
+        }
     }
+
 }
 

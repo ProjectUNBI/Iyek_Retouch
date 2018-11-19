@@ -17,13 +17,13 @@ import static com.unbi.iyekretouch.PublicStaticMethods.USERSAVEPREFERANCE;
 public class userSavePreferance implements Serializable {
 
     int multiplyer=16;
-    private float usershakelevel = (float) 3.8;//preset value p\of shake
+    private float usershakelevel = (float) 2.8;//preset value p\of shake
     private boolean is_iyekOn;
     private boolean is_customwordOn;
     private boolean is_IyekenglispaasteOn;
     private boolean iyek_first = true;
     private String userEngSeperator = "\n\n@@@@@@@@@@\n\n";
-    private int MaxWord = 50;
+    private int MaxWord = 250;
 
 
     /*
