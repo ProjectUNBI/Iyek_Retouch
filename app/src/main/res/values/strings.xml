@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Iyek Retouch</string>
+    <string name="app_name">Iyek reTouch</string>
     <string name="cutpastestring">Text will convert to Iyek if You cut or copy starting with "##"\n[Press to change]</string>
     <string name="autocutpastestring">Enable auto_cut_Paste when shaking mobile\n[Press to change prefix]</string>
     <string name="custwordstring">Custom words\n[Press to change]</string>
