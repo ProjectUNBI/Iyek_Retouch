@@ -135,8 +135,8 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
                     if (Iyekadd.getText().toString().equals("Your Iyek here...") || Iyekadd.getText().toString().equals("") || Engadd == null) {
                         return;
                     }
-                    Log.d("BUGGGY BUG", Engadd.getText().toString());
-                    Log.d("BUGGY BYG", Iyekadd.getText().toString());
+//                    //Log.d("BUGGGY BUG", Engadd.getText().toString());
+//                    //Log.d("BUGGY BYG", Iyekadd.getText().toString());
                     if (comefromredit) {
                         comefromredit = false;
                         if (thiscosition % 2 != 0) {
@@ -187,7 +187,7 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, long id) {
-                Log.d("HELLO LONGCLICK", "YOLO");
+//                //Log.d("HELLO LONGCLICK", "YOLO");
                 //TODO show the TEXT edit and test veiw
                 doredittheword(position);
                 //set the Text to the what is on it
@@ -197,8 +197,8 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("GRIDVIEW", String.valueOf(position) + "   " + String.valueOf(id) + "  " + String.valueOf(view) + "     " + String.valueOf(parent));
-                Log.d("ADAPTER VIEW", parent.toString());
+//                //Log.d("GRIDVIEW", String.valueOf(position) + "   " + String.valueOf(id) + "  " + String.valueOf(view) + "     " + String.valueOf(parent));
+//                //Log.d("ADAPTER VIEW", parent.toString());
                 if (swipeDetector.swipeDetected()) {
                     if (swipeDetector.getAction() == Swipedetector.Action.RL) {
                         dobviewdeletwithanim(parent,view,position);
@@ -220,17 +220,17 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
                 // r.bottom is the position above soft keypad or device button.
                 // if keypad is shown, the r.bottom is smaller than that before.
                 int keypadHeight = screenHeight - r.bottom;
-                Log.d("TAG", "keypadHeight = " + keypadHeight);
+                //Log.d("TAG", "keypadHeight = " + keypadHeight);
                 if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
                     // keyboard is opened
-                    Log.d("KEYBOARD", "SHOW");
+                    //Log.d("KEYBOARD", "SHOW");
                     keyboardwasshown = true;
 //                    keyboardopen();
                 } else {
                     // keyboard is closed
                     keyboardclose();
                     keyboardwasshown = false;
-                    Log.d("KEYBOARD", "HIGH");
+                    //Log.d("KEYBOARD", "HIGH");
                 }
             }
         });
@@ -357,13 +357,13 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
         int X = (int) event.getX();
         int Y = (int) event.getY();
         int eventaction = event.getAction();
-        Log.d("ACTION", String.valueOf(eventaction));
+        //Log.d("ACTION", String.valueOf(eventaction));
         switch (eventaction) {
             case MotionEvent.ACTION_DOWN:
 //                Toast.makeText(this, "ACTION_DOWN AT COORDS "+"X: "+X+" Y: "+Y, Toast.LENGTH_SHORT).show();
                 hidevisible();
                 userinterected();
-                Log.d("MOVE", "Down");
+                //Log.d("MOVE", "Down");
                 break;
             case MotionEvent.ACTION_MOVE:
 

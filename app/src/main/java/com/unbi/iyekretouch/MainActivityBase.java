@@ -68,7 +68,7 @@ public class MainActivityBase extends myExtraActivity {
             return;
         }
         String content = readUri(a);
-//        Log.d("Hello my sadcsacsd", content);
+//        //Log.d("Hello my sadcsacsd", content);
         if(content.length()<1){
             return;
         }
@@ -106,7 +106,7 @@ public class MainActivityBase extends myExtraActivity {
     }
 
     private void doimportfile(Uri myUri) {
-        Log.d("URI", myUri.toString());
+        //Log.d("URI", myUri.toString());
 //        if (!myUri.toString().contains("iyek")) {
 //            Toast.makeText(this, "Unsupported File type", Toast.LENGTH_SHORT).show();
 //            return;
@@ -119,10 +119,10 @@ public class MainActivityBase extends myExtraActivity {
         long size = f.length();
         if (size > 1000000) {
             Toast.makeText(this, "File Too Large...", Toast.LENGTH_SHORT).show();
-            Log.d("File too large", "File Should Importing");
+            //Log.d("File too large", "File Should Importing");
             return;
         }
-        Log.d("File should Import", myUri.toString());
+        //Log.d("File should Import", myUri.toString());
         doimportcustumword(readfile(f));
     }
 
@@ -187,7 +187,7 @@ public class MainActivityBase extends myExtraActivity {
         ArrayList<Uri> myUriarray = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         if (myUriarray != null) {
             // Update UI to reflect multiple images being shared
-//                Log.d("File should Import","File Should Import ARRAy");
+//                //Log.d("File should Import","File Should Import ARRAy");
             doimportfile(myUriarray.get(0));
         }
     }

@@ -52,7 +52,7 @@ public class userSavePreferance implements Serializable {
     }
 
     public float getUsershakelevel() {
-        Log.d("MY SENSIBILIT",String.valueOf(usershakelevel+(float) 1));
+//        //Log.d("MY SENSIBILIT",String.valueOf(usershakelevel+(float) 1));
         if((float)1.2>usershakelevel){
             return (float)1.2;
         }

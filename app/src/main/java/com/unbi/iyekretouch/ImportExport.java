@@ -80,7 +80,7 @@ public class ImportExport extends FileProvider {
             return;
         }
         Uri path = FileProvider.getUriForFile(activity, "com.unbi.iyekretouch", file);
-        Log.d("hvjkh",String.valueOf(path));
+        //Log.d("hvjkh",String.valueOf(path));
 
         Intent share = new Intent();
         share.setAction(Intent.ACTION_SEND);

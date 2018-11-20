@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
@@ -44,10 +45,10 @@ public class myAccessibility extends AccessibilityService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        Log.d("TAG", "INtent");
+//        //Log.d("TAG", "INtent");
         if (intent != null && intent.getExtras() != null) {
             //Got the intent
-//            Log.d("TAG", "MYSTRTSERVICE");
+//            //Log.d("TAG", "MYSTRTSERVICE");
             Bundle b = intent.getExtras();
             String GsonObject = b.getString("myObject");
             customIntent cusTum = getGsonToObject(GsonObject, customIntent.class);
@@ -68,17 +69,17 @@ public class myAccessibility extends AccessibilityService {
             ///////////////////
             switch (extra) {
                 case MYSTARTSERVICE:
-                    Log.d("TAG", "MYSTRTSERVICE");
+                    //Log.d("TAG", "MYSTRTSERVICE");
                     startshakeservice();//run the service
                     //check the user accessibility
                     //do stop service...but run the shake service
                     break;
                 case MYSTOPSERVICE:
-                    Log.d("TAG", "MYSTOPSERVICE");
+                    //Log.d("TAG", "MYSTOPSERVICE");
                     stopshakeservice();
                     break;
                 case MYRESTARTSERVICE:
-//                    Log.d("TAG", "MYRESTART");
+//                    //Log.d("TAG", "MYRESTART");
 //                    if (shakeOptionsObj != null && shakeOptionsObj.getShakeDetector() != null) {
 //                        shakeOptionsObj.getShakeDetector().stopShakeDetector(getApplicationContext());//stoping the previous one
 //                    }
@@ -91,7 +92,7 @@ public class myAccessibility extends AccessibilityService {
                     //Stop the service firse
                     //run cae1 again
                 case MYSHAKEFROMBROADCAST:
-//                    Log.d("TAG", "PreFiltre");
+//                    //Log.d("TAG", "PreFiltre");
                     currentmillis = System.currentTimeMillis();
                     if (currentmillis - previousmilli > 500) {
                         previousmilli = currentmillis;//protecting this handeler method
@@ -99,7 +100,7 @@ public class myAccessibility extends AccessibilityService {
                             makeNonNullUsersave();
                         }
                         if (userSaved.isIs_iyekOn()) {
-                            Log.d("TAG", "MYSHAKEFROMBROADCAST");
+                            //Log.d("TAG", "MYSHAKEFROMBROADCAST");
                             try {//TODO I dont want to loose the accessibility service
                                 doIyekTransliteration();
                             } catch (Exception e) {
@@ -109,7 +110,7 @@ public class myAccessibility extends AccessibilityService {
                     currentmillis = System.currentTimeMillis();//assingning values to current milli
                     //shakebroadcast Receive from the Broadcast receiver
                     //so do iyek or not
-//                    Log.d("Shakservice BAckround","Shake");
+//                    //Log.d("Shakservice BAckround","Shake");
                     break;
                 case USERPREFCHANGE:
                     if (cusTum != null) {
@@ -118,7 +119,7 @@ public class myAccessibility extends AccessibilityService {
                     if (shakeOptionsObj != null && shakeOptionsObj.getShakeDetector() != null) {
                         shakeOptionsObj.getShakeDetector().stopShakeDetector(this);
                     }
-                    Log.d("FromAccessibilitye", String.valueOf(userSaved.getUsershakelevel()));
+                    //Log.d("FromAccessibilitye", String.valueOf(userSaved.getUsershakelevel()));
                     shakeOptionsObj = new shakeOptionsObj(userSaved.getUsershakelevel());
                     shakeOptionsObj.getShakeDetector().start(this);
                     break;
@@ -182,7 +183,7 @@ public class myAccessibility extends AccessibilityService {
         } else {
             stopforground();
             userSaved.setIs_iyekOn(false, getApplicationContext());
-            Log.d("Hndeler", "1");
+            //Log.d("Hndeler", "1");
             //Send Intent to update The UI
             DisplayLoggingInfo();
         }
@@ -193,7 +194,7 @@ public class myAccessibility extends AccessibilityService {
      */
 
     private void DisplayLoggingInfo() {
-        Log.d(TAG, "entered DisplayLoggingInfo");
+        //Log.d(TAG, "entered DisplayLoggingInfo");
         intentToMainAct.putExtra("time", new Date().toLocaleString());
         intentToMainAct.putExtra("counter", String.valueOf(22222));
         sendBroadcast(intentToMainAct);
@@ -211,7 +212,7 @@ public class myAccessibility extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-//        Log.d("dfghnrgh", "onServiceConnected");
+//        //Log.d("dfghnrgh", "onServiceConnected");
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
         info.flags = AccessibilityServiceInfo.DEFAULT |
                 AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS |
@@ -267,8 +268,8 @@ public class myAccessibility extends AccessibilityService {
                     android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
 //            Log.v(TAG, "accessibilityEnabled = " + accessibilityEnabled);
         } catch (Settings.SettingNotFoundException e) {
-            Log.e(TAG, "Error finding setting, default accessibility to not found: "
-                    + e.getMessage());
+//            Log.e(TAG, "Error finding setting, default accessibility to not found: "
+//                    + e.getMessage());
         }
         TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
         if (accessibilityEnabled == 1) {
@@ -280,7 +281,7 @@ public class myAccessibility extends AccessibilityService {
                 mStringColonSplitter.setString(settingValue);
                 while (mStringColonSplitter.hasNext()) {
                     String accessibilityService = mStringColonSplitter.next();
-                    Log.v(TAG, "-------------- > accessibilityService :: " + accessibilityService + " " + service);
+//                    Log.v(TAG, "-------------- > accessibilityService :: " + accessibilityService + " " + service);
                     if (accessibilityService.equalsIgnoreCase(service)) {
                         Log.v(TAG, "We've found the correct setting - accessibility is switched on!");
                         return true;
@@ -311,17 +312,18 @@ public class myAccessibility extends AccessibilityService {
             return;
         }
         Bundle arguments = new Bundle();
-//        Log.d("INSIDE ACCESSIBILIT1", String.valueOf(curActivity.getMaxTextLength()));
-//        Log.d("INSIDE ACCESSIBILIT2", String.valueOf(curActivity.getText().length()));
-//        Log.d("INSIDE ACCESSIBILIT3", String.valueOf(curActivity.getTextSelectionEnd()));
-//        Log.d("INSIDE ACCESSIBILIT4", String.valueOf(curActivity.getTextSelectionStart()));
+//        //Log.d("INSIDE ACCESSIBILIT1", String.valueOf(curActivity.getMaxTextLength()));
+//        //Log.d("INSIDE ACCESSIBILIT2", String.valueOf(curActivity.getText().length()));
+//        //Log.d("INSIDE ACCESSIBILIT3", String.valueOf(curActivity.getTextSelectionEnd()));
+//        //Log.d("INSIDE ACCESSIBILIT4", String.valueOf(curActivity.getTextSelectionStart()));
         try {
             arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_START_INT, 0);
             arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_END_INT, curActivity.getText().length());
-            Log.d("THE LENTH VALUE", String.valueOf(curActivity.getTextSelectionEnd()) + "   " + curActivity.getText());
-            if (curActivity.getTextSelectionEnd() < 0) {
+//            Log.d("THE LENTH VALUE", String.valueOf(curActivity.getTextSelectionEnd()) + "   " + curActivity.getText());
+            if (curActivity.getTextSelectionEnd() < 1) {
                 return;
             }
+//            Log.d("LENGTH" + curActivity.getTextSelectionEnd(), curActivity.getText().toString());
             curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_SELECTION.getId(), arguments);
         } catch (Exception e) {
             return;
@@ -329,20 +331,58 @@ public class myAccessibility extends AccessibilityService {
         //TODO read clipboard data
         try {
             userPreviousClippboard = readclipboard();
-            curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CUT.getId(), arguments);
-            String toconvert = readclipboard();
-//       //            (toconvert, userSaved);
+            String toconvert = curActivity.getText().toString();
             doiyek.convertnow(custumstring, getApplicationContext(), toconvert, userSaved);
+//            Log.d("LENGTHConverted", doiyek.getConverted());
             setprevclip(doiyek.getConverted());
             if (toconvert.length() < 1) {
                 setprevclip(this.userPreviousClippboard);
                 return;
             }
-            curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_PASTE.getId(), arguments);
+            patchit(toconvert, curActivity, this.userPreviousClippboard, userSaved, doiyek.getConverted());
+            waituntillchange(curActivity);
         } catch (Exception e) {
-        } finally {
-            setprevclip(this.userPreviousClippboard);
         }
+    }
+
+    private void patchit(final String toconvert, final AccessibilityNodeInfo curActivity, final String stringforclipboard, final userSavePreferance user, final String converted) {
+        Runnable runnable = new Runnable() {
+            int counter = 0;
+
+            @Override
+            public void run() {
+//                Log.e("HANDLER", "run: Outside Runnable");
+                if (!(toconvert.length() > 0 && toconvert.length() < user.getMaxWord())) {
+//                    Log.e("HANDLER", "run: Runnable");
+                    handler.removeCallbacks(this);
+                } else {
+                    if (converted.equals(readclipboard())) {
+                        curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_PASTE.getId());
+                        setprevclip(stringforclipboard);
+//                        Toast.makeText(myAccessibility.this, "Cannot able to paste...", Toast.LENGTH_SHORT).show();
+
+                        handler.removeCallbacks(this);
+                    }
+                    if (counter > 100) {
+//                        Toast.makeText(myAccessibility.this, "Cannot able to paste...", Toast.LENGTH_SHORT).show();
+                        setprevclip(stringforclipboard);
+                        handler.removeCallbacks(this);
+                    }
+                    counter++;
+                    handler.postDelayed(this, 20);
+                }
+            }
+        };
+    }
+
+    private void waituntillchange(final AccessibilityNodeInfo curActivity) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                curActivity.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_PASTE.getId());
+            }
+        }, 100);
     }
 
     private void setprevclip(String string) {
@@ -377,8 +417,8 @@ public class myAccessibility extends AccessibilityService {
             while (!deque.isEmpty()) {
                 AccessibilityNodeInfo node = deque.removeFirst();
                 if (node.getActionList().contains(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLEAR_FOCUS)) {
-//                Log.d("shakemsg", String.valueOf(node));
-                    //Log.d("msg",String.valueOf(node.getTextSelectionEnd().toString().toLowerCase().contains("text")));
+//                //Log.d("shakemsg", String.valueOf(node));
+                    ////Log.d("msg",String.valueOf(node.getTextSelectionEnd().toString().toLowerCase().contains("text")));
                     return node;
                 }
                 for (int i = 0; i < node.getChildCount(); i++) {

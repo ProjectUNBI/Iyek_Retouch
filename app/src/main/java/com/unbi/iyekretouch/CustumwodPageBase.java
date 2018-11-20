@@ -101,8 +101,8 @@ public class CustumwodPageBase extends AppCompatActivity {
         if (Iyekadd.getText().toString().equals("Your Iyek here...") || Iyekadd.getText().toString().equals("") || Engadd == null) {
             return;
         }
-        Log.d("BUGGGY BUG",Engadd.getText().toString());
-        Log.d("BUGGY BYG",Iyekadd.getText().toString());
+        //Log.d("BUGGGY BUG",Engadd.getText().toString());
+        //Log.d("BUGGY BYG",Iyekadd.getText().toString());
         if (comefromredit) {
             comefromredit = false;
             if (thiscosition % 2 != 0) {

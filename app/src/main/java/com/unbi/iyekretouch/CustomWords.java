@@ -60,7 +60,7 @@ we wan Custom words like ths ":word(wordtoreplace: "
 //                    ", Value = " + entry.getValue());//  :w+(w+:
             string=string+entry.getKey()+"("+entry.getValue()+":";
         }
-        Log.d("THE CUSTUM W",string);
+//        //Log.d("THE CUSTUM W",string);
         this.setCustomword(string);
 
 

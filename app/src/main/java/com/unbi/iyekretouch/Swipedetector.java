@@ -48,12 +48,12 @@ public class Swipedetector  implements View.OnTouchListener {
                     if (Math.abs(deltaX) > MIN_DISTANCE) {
                         // left or right
                         if (deltaX < 0) {
-                            Log.d(logTag, "MYSwipe Left to Right");
+//                            //Log.d(logTag, "MYSwipe Left to Right");
                             mSwipeDetected = Action.LR;
                             return true;
                         }
                         if (deltaX > 0) {
-                            Log.d(logTag, "MYSwipe Right to Left");
+//                            //Log.d(logTag, "MYSwipe Right to Left");
                             mSwipeDetected = Action.RL;
                             return true;
                         }
@@ -63,12 +63,12 @@ public class Swipedetector  implements View.OnTouchListener {
                         if (Math.abs(deltaY) > MIN_DISTANCE) {
                             // top or down
                             if (deltaY < 0) {
-                                Log.d(logTag, "MYSwipe Top to Bottom");
+//                                //Log.d(logTag, "MYSwipe Top to Bottom");
                                 mSwipeDetected = Action.TB;
                                 return false;
                             }
                             if (deltaY > 0) {
-                                Log.d(logTag, "MYSwipe Bottom to Top");
+//                                //Log.d(logTag, "MYSwipe Bottom to Top");
                                 mSwipeDetected = Action.BT;
                                 return false;
                             }

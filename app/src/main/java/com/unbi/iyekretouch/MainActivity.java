@@ -130,7 +130,7 @@ public class MainActivity extends MainActivityBase {
                 // r.bottom is the position above soft keypad or device button.
                 // if keypad is shown, the r.bottom is smaller than that before.
                 int keypadHeight = screenHeight - r.bottom;
-                Log.d("TAG", "keypadHeight = " + keypadHeight);
+//                //Log.d("TAG", "keypadHeight = " + keypadHeight);
                 if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
                     // keyboard is opened
                     keyboardopen();
@@ -158,7 +158,7 @@ public class MainActivity extends MainActivityBase {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-        Log.d("hi", intent.toString());
+//        //Log.d("hi", intent.toString());
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             handleSendText(intent); // Handle text being sent
         }
@@ -309,7 +309,7 @@ public class MainActivity extends MainActivityBase {
         int id = item.getItemId();
         switch (id) {
             case R.id.unbiabout: {
-//                Log.d("log", "select unbi about");
+//                //Log.d("log", "select unbi about");
                 Intent intent = new Intent(getBaseContext(), about.class);
                 startActivity(intent);
                 break;

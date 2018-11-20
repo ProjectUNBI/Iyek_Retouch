@@ -47,7 +47,7 @@ public class mybubleseekbar extends BubbleSeekBar.OnProgressChangedListenerAdapt
     public void onProgressChanged(BubbleSeekBar bubbleSeekBar, final int progress, float progressFloat, boolean fromUser) {
 
         myprogress=progress;
-//        Log.d(String.valueOf(progress),"Lasttime change");
+//        //Log.d(String.valueOf(progress),"Lasttime change");
 
         mycustumobj=new customIntent(MYRESTARTSERVICE,progress);
         if(currentmillis-previousmilli>1000){

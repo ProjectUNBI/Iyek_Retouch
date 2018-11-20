@@ -34,9 +34,9 @@ public class doIyek {
     public void convertnow(String costumwordo, final Context context,String preiyek, userSavePreferance userpreferance) {
         setpreferance(preiyek,userpreferance);
 //        try {
-//            Log.d("getWhatpaste()", getWhatpaste());
-//            Log.d("getPreviousPreiyek()", getPreviousPreiyek());
-//            Log.d("getPreIyek()", getPreIyek());
+//            //Log.d("getWhatpaste()", getWhatpaste());
+//            //Log.d("getPreviousPreiyek()", getPreviousPreiyek());
+//            //Log.d("getPreIyek()", getPreIyek());
 //        } catch (Exception e) {
 //        }
         String arg = getPreIyek();
