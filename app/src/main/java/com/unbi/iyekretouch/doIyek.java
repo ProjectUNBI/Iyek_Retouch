@@ -18,8 +18,8 @@ public class doIyek {
     private String Seperator;
     private boolean isCustomword;
     private int maximumcharacter;
-    private String whatpaste="";
-    private String previousPreiyek="";
+    private String whatpaste = "";
+    private String previousPreiyek = "";
     private boolean datamustclear;
 
     private void setpreferance(String preiyek, userSavePreferance userpreferance) {
@@ -31,8 +31,8 @@ public class doIyek {
         this.setMaximumcharacter(userpreferance.getMaxWord());
     }
 
-    public void convertnow(String costumwordo, final Context context,String preiyek, userSavePreferance userpreferance) {
-        setpreferance(preiyek,userpreferance);
+    public void convertnow(String costumwordo, final Context context, String preiyek, userSavePreferance userpreferance) {
+        setpreferance(preiyek, userpreferance);
 //        try {
 //            //Log.d("getWhatpaste()", getWhatpaste());
 //            //Log.d("getPreviousPreiyek()", getPreviousPreiyek());
@@ -40,10 +40,15 @@ public class doIyek {
 //        } catch (Exception e) {
 //        }
         String arg = getPreIyek();
-        String temp=arg.replace("\n", "").replace("\r", "");
-        if (getWhatpaste() != null && getPreviousPreiyek() != null && (getPreIyek().equals(getWhatpaste())||getPreIyek().equals(temp))) {
+        String temp = arg.replace("\n", "").replace("\r", "");
+        if (getWhatpaste() != null && getPreviousPreiyek() != null
+                &&
+                (getPreIyek().equals(getWhatpaste()) ||
+                        (this.isIyekEng() && getPreIyek().equals(temp))
+                )
+                ) {
             this.setConverted(getPreviousPreiyek());
-            datamustclear=true;
+            datamustclear = true;
             return;
         }
         setPreviousPreiyek(arg);
@@ -164,8 +169,8 @@ public class doIyek {
     }
 
     public String getConverted() {
-        if(datamustclear){
-            datamustclear=false;
+        if (datamustclear) {
+            datamustclear = false;
             setWhatpaste(null);
         }
         return Converted;
