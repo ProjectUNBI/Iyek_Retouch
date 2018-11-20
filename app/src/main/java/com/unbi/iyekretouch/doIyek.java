@@ -42,7 +42,7 @@ public class doIyek {
         String arg = getPreIyek();
         String temp = null;
         if (this.isIyekEng()&getWhatpaste()!=null) {
-            temp = getWhatpaste().replace("\n", "").replace("\r", "");
+            temp = getWhatpaste().replace("\n", " ").replace("\r", " ");
         }
         if (getWhatpaste() != null && getPreviousPreiyek() != null
                 &&
