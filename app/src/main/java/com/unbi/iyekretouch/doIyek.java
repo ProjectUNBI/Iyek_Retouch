@@ -44,7 +44,7 @@ public class doIyek {
         if (getWhatpaste() != null && getPreviousPreiyek() != null
                 &&
                 (getPreIyek().equals(getWhatpaste()) ||
-                        (this.isIyekEng() && getPreIyek().equals(temp))
+                        (this.isIyekEng() && temp.equals(getWhatpaste()))
                 )
                 ) {
             this.setConverted(getPreviousPreiyek());
