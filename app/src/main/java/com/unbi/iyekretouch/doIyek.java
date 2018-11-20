@@ -40,11 +40,14 @@ public class doIyek {
 //        } catch (Exception e) {
 //        }
         String arg = getPreIyek();
-        String temp = arg.replace("\n", "").replace("\r", "");
+        String temp = null;
+        if (this.isIyekEng()) {
+            temp = getWhatpaste().replace("\n", "").replace("\r", "");
+        }
         if (getWhatpaste() != null && getPreviousPreiyek() != null
                 &&
                 (getPreIyek().equals(getWhatpaste()) ||
-                        (this.isIyekEng() && temp.equals(getWhatpaste()))
+                        (temp != null && getPreIyek().equals(temp))
                 )
                 ) {
             this.setConverted(getPreviousPreiyek());
