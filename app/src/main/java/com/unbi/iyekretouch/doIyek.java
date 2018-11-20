@@ -40,7 +40,8 @@ public class doIyek {
 //        } catch (Exception e) {
 //        }
         String arg = getPreIyek();
-        if (getWhatpaste() != null && getPreviousPreiyek() != null && getPreIyek().equals(getWhatpaste())) {
+        String temp=arg.replace("\n", "").replace("\r", "");
+        if (getWhatpaste() != null && getPreviousPreiyek() != null && (getPreIyek().equals(getWhatpaste())||getPreIyek().equals(temp))) {
             this.setConverted(getPreviousPreiyek());
             datamustclear=true;
             return;
