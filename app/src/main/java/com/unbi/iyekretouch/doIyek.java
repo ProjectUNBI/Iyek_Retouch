@@ -20,7 +20,10 @@ public class doIyek {
     private int maximumcharacter;
     private String whatpaste = "";
     private String previousPreiyek = "";
-    private boolean datamustclear;
+    private boolean datamustclear,isphonicEnable;
+    private String phonicSeperator;
+
+
 
     private void setpreferance(String preiyek, userSavePreferance userpreferance) {
         this.setPreIyek(preiyek);
@@ -29,6 +32,8 @@ public class doIyek {
         this.setSeperator(userpreferance.getUserEngSeperator());
         this.setCustomword(userpreferance.isIs_customwordOn());
         this.setMaximumcharacter(userpreferance.getMaxWord());
+        this.setIsphonicEnable(userpreferance.isPhonic());
+        this.setPhonicSeperator(userpreferance.getPhonicSeperator());
     }
 
     public void convertnow(String costumwordo, final Context context, String preiyek, userSavePreferance userpreferance) {
@@ -56,6 +61,13 @@ public class doIyek {
         }
         setPreviousPreiyek(arg);
         if (arg.length() > 0 && arg.length() < this.getMaximumcharacter()) {
+            /*
+            PhonicSeperator
+             */
+            if(isIsphonicEnable()){
+                arg = arg.replaceAll(getPhonicSeperator(), "ￅ");
+            }
+            //End of Phonic Seperator
             arg = arg.replaceAll("<", "︻");
             arg = arg.replaceAll(">", "︼");
             arg = arg.replaceAll("ã", "︶");
@@ -99,6 +111,7 @@ public class doIyek {
             arg = arg.replaceAll("︶", "ã");
             arg = arg.replaceAll("﹅", ":");
             arg = arg.replaceAll("︴", "∆");
+            arg = arg.replaceAll("ￅ", "");
             if (isIyekEng()) {
                 if (isIyekFirst()) {
                     this.setConverted(arg + getSeperator() + getPreIyek());
@@ -222,5 +235,21 @@ public class doIyek {
 
     public void setWhatpaste(String whatpaste) {
         this.whatpaste = whatpaste;
+    }
+
+    public boolean isIsphonicEnable() {
+        return isphonicEnable;
+    }
+
+    public void setIsphonicEnable(boolean isphonicEnable) {
+        this.isphonicEnable = isphonicEnable;
+    }
+
+    public String getPhonicSeperator() {
+        return phonicSeperator;
+    }
+
+    public void setPhonicSeperator(String phonicSeperator) {
+        this.phonicSeperator = phonicSeperator;
     }
 }

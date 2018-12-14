@@ -24,6 +24,8 @@ public class userSavePreferance implements Serializable {
     private boolean iyek_first = true;
     private String userEngSeperator = "\n\n@@@@@@@@@@\n\n";
     private int MaxWord = 300;
+    private boolean isPhonic=false;
+    private String PhonicSeperator="-";
 
 
     /*
@@ -125,5 +127,22 @@ public class userSavePreferance implements Serializable {
     }
 
 
+    public boolean isPhonic() {
+        return isPhonic;
+    }
 
+    public void setPhonic(boolean phonic, Context app) {
+        this.isPhonic = phonic;
+        saveMe(app);
+    }
+
+
+    public String getPhonicSeperator() {
+        return PhonicSeperator;
+    }
+
+    public void setPhonicSeperator(String phonicSeperator,Context app) {
+        this.PhonicSeperator = phonicSeperator;
+        saveMe(app);
+    }
 }

@@ -1,16 +1,19 @@
 package com.unbi.iyekretouch;
 
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
@@ -20,12 +23,16 @@ import android.os.Parcelable;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +77,7 @@ public class MainActivity extends MainActivityBase {
         //Readed
         wordcount = (TextView) findViewById(R.id.wordnumber);
         customwordEnable = (TextView) findViewById(R.id.customEnbaleTextveiw);
+        PhonicEnable = (TextView) findViewById(R.id.phonicEnbaleTextveiw);
         iyekEngenable = (TextView) findViewById(R.id.isIyekIngPating);
         isiyekFirst = (TextView) findViewById(R.id.isIyekisFirst);
         seekbar = (BubbleSeekBar) findViewById(R.id.seekbar);
@@ -90,6 +98,14 @@ public class MainActivity extends MainActivityBase {
         } else {
             iyekEngenable.setText("Disabled");
             iyekEngenable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_concreteColour));
+        }
+        //Phonic enable
+        if (userSaved.isIs_customwordOn()) {
+            customwordEnable.setText("Enabled");
+            customwordEnable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_nephritisCoulor));//fbutton_color_concreteColour,fbutton_color_nephritisCoulo
+        } else {
+            customwordEnable.setText("Disabled");
+            customwordEnable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_concreteColour));
         }
         //is iyek preeed in Iyek eng Pasting
         if (userSaved.isIyek_first()) {
@@ -329,4 +345,27 @@ public class MainActivity extends MainActivityBase {
         super.onBackPressed();
         finish();
     }
+
+    public void phonicWordEnable(View view) {
+        //do phonic
+        if (userSaved.isPhonic()) {
+            userSaved.setPhonic(false, getApplicationContext());
+        } else {
+            userSaved.setPhonic(true, getApplicationContext());
+        }
+        if (userSaved.isPhonic()) {
+            PhonicEnable.setText("Enabled");
+            PhonicEnable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_nephritisCoulor));//fbutton_color_concreteColour,fbutton_color_nephritisCoulo
+        } else {
+            PhonicEnable.setText("Disabled");
+            PhonicEnable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_concreteColour));
+        }
+    }
+
+    public void phonicWord(View view) {
+        //TODO Start Phonic dialog box
+        openDialog();
+    }
+
 }
+
