@@ -101,11 +101,11 @@ public class MainActivity extends MainActivityBase {
         }
         //Phonic enable
         if (userSaved.isIs_customwordOn()) {
-            customwordEnable.setText("Enabled");
-            customwordEnable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_nephritisCoulor));//fbutton_color_concreteColour,fbutton_color_nephritisCoulo
+            PhonicEnable.setText("Enabled");
+            PhonicEnable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_nephritisCoulor));//fbutton_color_concreteColour,fbutton_color_nephritisCoulo
         } else {
-            customwordEnable.setText("Disabled");
-            customwordEnable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_concreteColour));
+            PhonicEnable.setText("Disabled");
+            PhonicEnable.setBackgroundColor(getResources().getColor(R.color.fbutton_color_concreteColour));
         }
         //is iyek preeed in Iyek eng Pasting
         if (userSaved.isIyek_first()) {

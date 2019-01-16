@@ -80,6 +80,7 @@ public class doIyek {
                 String[] seperate0 = arg.split("\\*####\\*");                                                                         //here the *####*Dictio........... is remove
                 arg = seperate0[0];
             }
+            arg=arg.replaceAll("C","c");
             arg = arg + "*####*Dictionary:c=k:z=j:ch=ç:sh=s:oo=u:kh=õ:ng=ñ:th=θ:ph=f:jh=ɫ:gh=ö:bh=v:dh=ð:ee=i:aa=â:ei=ê:ou=ō:ae=e:ai=å:oi=ø:ui=û:ao=œ:L-꯭ꯂã:W-꯭ꯋã:R-꯭ꯔã:Y-꯭ꯌã:ar=ꯑ꯭ꯔ:er=ꯑꯦ꯭ꯔ:ir=ꯏ꯭ꯔ:or=ꯑꯣ꯭ꯔ:ur=ꯎ꯭ꯔ:aaa=ꯑꯥ:E-ꯑꯦ:I-ꯏ:O-ꯑꯣ:U-ꯎ:A-ꯑ:r-꯭ꯔã:";//here setting things for doing conditional search and replacement
             arg = arg.replaceAll("(?s)(\\w+)(?=.*:\\1=(.)\\b)", "$2");                                                 //here leter like "ch","dh","bh" are converted to single letter like ç,ð,v and so on
             arg = arg.replaceAll("(?s)([^aeiouAEIOU])\\B([WLRY])(?=.*:\\2\\-(\\w+)\\b:)", "ã$1$3");                    //here we converting word like "kWa" to "ãk-꯭ꯋã","kRa" to"ãk-꯭ꯔã" and so on["ã" is used to protect k from converting to kok lonsum and "l" to lai lonsum etc ...................

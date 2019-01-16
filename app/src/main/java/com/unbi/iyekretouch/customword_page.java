@@ -129,10 +129,10 @@ public class customword_page extends CustumwodPageBase implements ObservableScro
             @Override
             public void onClick(View v) {
                 if (toobar.getVisibility() == View.VISIBLE) {
-                    if (Engadd.getText().toString().equals("You word here....") || Engadd.getText().toString().equals("") || Engadd == null) {
+                    if (Engadd.getText().toString().equals("") || Engadd == null) {
                         return;
                     }
-                    if (Iyekadd.getText().toString().equals("Your Iyek here...") || Iyekadd.getText().toString().equals("") || Engadd == null) {
+                    if (Iyekadd.getText().toString().equals("") || Engadd == null) {
                         return;
                     }
 //                    //Log.d("BUGGGY BUG", Engadd.getText().toString());

@@ -47,8 +47,6 @@ public class CustumwodPageBase extends AppCompatActivity {
     protected void doaddwordactivity() {
         //show text view
         showvisible();
-        Iyekadd.setText("Your Iyek here...");
-        Engadd.setText("You word here....");
     }
 
     protected void sharewhatsapp(){
@@ -95,10 +93,10 @@ public class CustumwodPageBase extends AppCompatActivity {
     }
 
     protected void doafterkeyboardclose() {
-        if (Engadd.getText().toString().equals("You word here....") || Engadd.getText().toString().equals("") || Engadd == null) {
+        if (Engadd.getText().toString().equals("") || Engadd == null) {
             return;
         }
-        if (Iyekadd.getText().toString().equals("Your Iyek here...") || Iyekadd.getText().toString().equals("") || Engadd == null) {
+        if (Iyekadd.getText().toString().equals("") || Engadd == null) {
             return;
         }
         //Log.d("BUGGGY BUG",Engadd.getText().toString());
@@ -156,8 +154,6 @@ public class CustumwodPageBase extends AppCompatActivity {
                 })
                 .playOn(toobar);
 //        toobar.setVisibility(View.GONE);
-        Engadd.setText("You word here....");
-        Iyekadd.setText("Your Iyek here...");
     }
 
     protected void getmycustumWord() {
