@@ -3,16 +3,20 @@ package com.unbi.iyekretouch;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
@@ -237,18 +241,41 @@ public class myAccessibility extends AccessibilityService {
     OnGoing Notification
      */
     private void showNotification() {
-        Intent notificationIntent = new Intent(this, myAccessibility.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        int ONGOING_NOTIFICATION_ID = 001;
-        Notification notification =
-                new Notification.Builder(this)
-                        .setSmallIcon(R.drawable.ic_iyek)
-                        .setContentTitle("Iyek")
-                        .setContentText("Running.....")
-                        .setContentIntent(pendingIntent)
-                        .build();
-        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            String NOTIFICATION_CHANNEL_ID = "com.unbi.iyekretouch";
+            String channelName = "My Background Service";
+            NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+            chan.setLightColor(Color.BLUE);
+            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.createNotificationChannel(chan);
+
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+            Notification notification = notificationBuilder.setOngoing(true)
+                    .setSmallIcon(R.drawable.ic_iyek)
+                    .setContentTitle("Iyek")
+                    .setContentText("Running.....")
+                    .setPriority(NotificationManager.IMPORTANCE_MIN)
+                    .setCategory(Notification.CATEGORY_SERVICE)
+                    .build();
+            startForeground(2, notification);
+
+
+        }else {
+            Intent notificationIntent = new Intent(this, myAccessibility.class);
+            PendingIntent pendingIntent =
+                    PendingIntent.getActivity(this, 0, notificationIntent, 0);
+            int ONGOING_NOTIFICATION_ID = 001;
+            Notification notification =
+                    new Notification.Builder(this)
+                            .setSmallIcon(R.drawable.ic_iyek)
+                            .setContentTitle("Iyek")
+                            .setContentText("Running.....")
+                            .setContentIntent(pendingIntent)
+                            .build();
+            startForeground(ONGOING_NOTIFICATION_ID, notification);
+        }
     }
 
     private void stopforground() {

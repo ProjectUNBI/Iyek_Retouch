@@ -15,9 +15,7 @@ public class about extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about);
         final Button whatsapp = (Button) findViewById(R.id.whatsapp);
-        final Button youtube = (Button) findViewById(R.id.youtube);
         whatsapp.setOnClickListener(onClickListener);
-        youtube.setOnClickListener(onClickListener);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -25,15 +23,11 @@ public class about extends AppCompatActivity {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.whatsapp:
-                    parse("https://chat.whatsapp.com/LGuYpVHKGPMDU5tLqdDKbm");
+                    parse("https://chat.whatsapp.com/HZbq4aM0UTmJobdZzekE82");
                     //DO something
                     // Toast.makeText(help.this, "whatsapp", Toast.LENGTH_SHORT).show();
                     break;
-                case R.id.youtube:
-                    parse("https://youtu.be/czPKKqgTcJg");
-                    //DO something
-                    //Toast.makeText(help.this, "youtube", Toast.LENGTH_SHORT).show();
-                    break;
+
             }
         }
     };
